@@ -45,9 +45,9 @@ public class ForumStatisticsTestSuite {
 
 
     private void currentlyTestedAssertions(double expectedPostsPerUser,double expectedCommentsPerUser, double expectedCommentsPerPost){
-        Assertions.assertEquals(expectedPostsPerUser, averagePostsPerUser);
-        Assertions.assertEquals(expectedCommentsPerUser, averageCommentsPerUser);
-        Assertions.assertEquals(expectedCommentsPerPost, averageCommentsPerPost);
+        Assertions.assertEquals(expectedPostsPerUser, averagePostsPerUser, 0.01);
+        Assertions.assertEquals(expectedCommentsPerUser, averageCommentsPerUser,0.01);
+        Assertions.assertEquals(expectedCommentsPerPost, averageCommentsPerPost,0.01);
     }
 
     @Nested
