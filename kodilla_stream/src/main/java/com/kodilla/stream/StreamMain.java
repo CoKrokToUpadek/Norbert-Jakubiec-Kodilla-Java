@@ -15,11 +15,15 @@ public class StreamMain {
         poemBeautifier.beautify("Ala ma kota",((text)-> text.toUpperCase()));
         poemBeautifier.beautify("Ala ma kota",((text)->"ABC "+text+" ABC"));
         poemBeautifier.beautify("Ala ma kota",((text)->"|||| "+text+" ||||"));
-        poemBeautifier.beautify("Ala ma kota",((text)->"\u001B[31m"+text+"\u001B[37m"));
-        poemBeautifier.beautify("Ala ma kota",((text)->"\u001B[35m"+text+"\u001B[37m"));
-
-
-
+        poemBeautifier.beautify("Ala ma kota",((text)->"\u001B[31m"+text+"\u001B[0m"));
+        poemBeautifier.beautify("Ala ma kota",((text)-> {
+        String resetColorCommand="\u001b[0m";
+        String output="";
+            for(int i=0;i<text.length();i++){
+              output+=  "\u001B[3"+(i%7)+"m"+text.charAt(i);
+            }
+            return output+resetColorCommand;
+        }));
 
 
 //        ExpressionExecutor expressionExecutor = new ExpressionExecutor();
