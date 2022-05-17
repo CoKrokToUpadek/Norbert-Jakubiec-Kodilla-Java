@@ -1,0 +1,44 @@
+package com.kodilla.stream;
+
+import com.kodilla.stream.beautifier.PoemBeautifier;
+import com.kodilla.stream.lambda.ExecuteSaySomething;
+import com.kodilla.stream.lambda.ExpressionExecutor;
+import com.kodilla.stream.lambda.Processor;
+import com.kodilla.stream.lambda.SaySomething;
+import com.kodilla.stream.reference.FunctionalCalculator;
+
+public class StreamMain {
+    public static void main(String[] args) {
+        System.out.println("Welcome to module 7 - Stream");
+
+        PoemBeautifier poemBeautifier=new PoemBeautifier();
+        poemBeautifier.beautify("Ala ma kota",((text)-> text.toUpperCase()));
+        poemBeautifier.beautify("Ala ma kota",((text)->"ABC "+text+" ABC"));
+        poemBeautifier.beautify("Ala ma kota",((text)->"|||| "+text+" ||||"));
+        poemBeautifier.beautify("Ala ma kota",((text)->"\u001B[31m"+text+"\u001B[37m"));
+        poemBeautifier.beautify("Ala ma kota",((text)->"\u001B[35m"+text+"\u001B[37m"));
+
+
+
+
+
+//        ExpressionExecutor expressionExecutor = new ExpressionExecutor();
+//
+//        System.out.println("Calculating expressions with lambdas");
+//        expressionExecutor.executeExpression(10, 5, (a, b) -> a + b);
+//        expressionExecutor.executeExpression(10, 5, (a, b) -> a - b);
+//        expressionExecutor.executeExpression(10, 5, (a, b) -> a * b);
+//        expressionExecutor.executeExpression(10, 5, (a, b) -> a / b);
+//
+//        System.out.println("Calculating expressions with method references");
+//        expressionExecutor.executeExpression(3, 4, FunctionalCalculator::multiplyAByB);
+//        expressionExecutor.executeExpression(3, 4, FunctionalCalculator::addAToB);
+//        expressionExecutor.executeExpression(3, 4, FunctionalCalculator::subBFromA);
+//        expressionExecutor.executeExpression(3, 4, FunctionalCalculator::divideAByB);
+
+//        Processor processor=new Processor();
+//        ExecuteSaySomething executeSaySomething=new ExecuteSaySomething();
+//        processor.execute(executeSaySomething);
+//        processor.execute(() -> System.out.println("This is an example text."));
+    }
+}
