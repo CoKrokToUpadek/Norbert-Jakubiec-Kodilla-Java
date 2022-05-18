@@ -25,7 +25,6 @@ public class World {
     }
 
     public void print(){
-        System.out.println("test");
         continentsInTheWorld.stream().map(Continent::getContinentName).forEach(System.out::println);
     }
 }
