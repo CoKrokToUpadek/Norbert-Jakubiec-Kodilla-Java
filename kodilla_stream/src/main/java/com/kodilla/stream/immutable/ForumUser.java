@@ -1,4 +1,4 @@
-package com.kodilla.stream.iterate;
+package com.kodilla.stream.immutable;
 
 public class ForumUser {
 
