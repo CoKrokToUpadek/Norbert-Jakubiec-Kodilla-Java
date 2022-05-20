@@ -30,6 +30,7 @@ class BoardTestSuite {
         assertEquals(3, project.getTaskLists().size());
     }
 
+
     private Board prepareTestData() {
         //users
         User user1 = new User("developer1", "John Smith");
@@ -101,16 +102,16 @@ class BoardTestSuite {
         Board project = prepareTestData();
 
         //When
-        User user = new User("developer1", "John Smith");     // [1]
-        List<Task> tasks = project.getTaskLists().stream()    // [2]
-                .flatMap(l -> l.getTasks().stream())               // [3]
-                .filter(t -> t.getAssignedUser().equals(user))     // [4]
-                .collect(toList());                                // [5]
+        User user = new User("developer1", "John Smith");
+        List<Task> tasks = project.getTaskLists().stream()
+                .flatMap(l -> l.getTasks().stream())
+                .filter(t -> t.getAssignedUser().equals(user))
+                .collect(toList());
 
         //Then
-        assertEquals(2, tasks.size());                        // [6]
-        assertEquals(user, tasks.get(0).getAssignedUser());   // [7]
-        assertEquals(user, tasks.get(1).getAssignedUser());   // [8]
+        assertEquals(2, tasks.size());
+        assertEquals(user, tasks.get(0).getAssignedUser());
+        assertEquals(user, tasks.get(1).getAssignedUser());   
     }
 
     @Test
