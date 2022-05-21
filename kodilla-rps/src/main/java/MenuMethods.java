@@ -22,10 +22,13 @@ public class MenuMethods {
 
         while (controller){
             initialNumberOfRounds=scanner.nextLine();
+            if(initialNumberOfRounds.isEmpty()){
+                initialNumberOfRounds="wrongInput";
+            }
             try{
                 numberOfRounds=Integer.parseInt(initialNumberOfRounds);
                 controller=false;
-            }catch (NumberFormatException | NullPointerException e){
+            }catch (NumberFormatException e){
                 System.out.println("Wrong format or no input. Please try again");
             }
         }
