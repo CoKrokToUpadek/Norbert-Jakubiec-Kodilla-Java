@@ -83,6 +83,12 @@ public class MenuMethods {
         }
     }
 
+    public void scorePrinter(String playerName, int playerScore, int AIScore){
+        System.out.println(playerName+" have "+playerScore+" points");
+        System.out.println("AI have "+AIScore+" points");
+    }
+
+
     public String getName() {
         return name;
     }

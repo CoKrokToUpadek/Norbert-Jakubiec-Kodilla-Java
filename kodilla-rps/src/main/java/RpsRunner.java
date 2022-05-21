@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class RpsRunner {
+
+
     public static void main(String[] args) throws InterruptedException {
 
         //its really minimum effort but it works....most of the time
@@ -60,16 +62,14 @@ public class RpsRunner {
                   AIScore++;
               }
               System.out.println("We got to the end of the "+currentRound+" round. Current Score:");
-              System.out.println(name+" have "+playerScore+" points");
-              System.out.println("AI have "+AIScore+" points");
+              menuMethods.scorePrinter(name,playerScore,AIScore);
               if (numberOfRounds==currentRound){
                   System.out.println("End of the game. End of the game result:");
-                  System.out.println(name+" have "+playerScore+" points");
-                  System.out.println("AI have "+AIScore+" points");
+                  menuMethods.scorePrinter(name,playerScore,AIScore);
                   if (AIScore>playerScore){
                       System.out.println("AI won");
                   } else if(AIScore<playerScore){
-                      System.out.println("Player won");
+                      System.out.println( name+" won");
                   }else{
                       System.out.println("its a draw");
                   }
