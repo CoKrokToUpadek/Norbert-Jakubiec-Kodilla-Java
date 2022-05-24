@@ -8,7 +8,7 @@ public class RpsRunner {
         //its really minimum effort but it works....most of the time
         //main scope is really messy but as I said, it works
         //with only a little of work new moves can be added
-        //changed nullpointer to if statement
+        //changed null pointer to if statement
 
         ResultCalculator resultCalculator=new ResultCalculator();
 
