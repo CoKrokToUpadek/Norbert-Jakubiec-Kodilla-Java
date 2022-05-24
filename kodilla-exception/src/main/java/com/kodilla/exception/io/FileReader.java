@@ -10,23 +10,34 @@ import java.util.stream.Stream;
 public class FileReader {
 
 
-    String absolute="kodilla-exception/src/main/resources/names.txt";
-    public void readFile(){
+   // String absolute="kodilla-exception/src/main/resources/names.txt";
+    public void readFile() throws FileReaderException{
 
 
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("names.txt").getFile());
-        //Path path = Paths.get(absolute);
-        //Paths.get(file.getPath()
-        try (Stream<String> fileLines = Files.lines(Paths.get(absolute))){
+
+        try (Stream<String> fileLines = Files.lines(Paths.get(file.getPath()))){
             fileLines.forEach(System.out::println);
         } catch (IOException e) {
-            System.out.println("Błąd odczytu pliku"+e);
+           throw new FileReaderException();
         }finally {
-            System.out.println("tak było nie zmyślam");
+            System.out.println("bye bye");
+            System.out.println(file.getPath());
         }
 
-        System.out.println(file.getPath());
+    }
+
+    public void readFile(final String fileName) throws FileReaderException {
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        try (Stream<String> fileLines = Files.lines(Path.of(classLoader.getResource(fileName).toURI()))) {
+            fileLines.forEach(System.out::println);
+        } catch (Exception e) {
+            throw new FileReaderException();
+        } finally {
+            System.out.println("I am gonna be here... always!");
+        }
     }
 
 }
