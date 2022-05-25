@@ -1,0 +1,14 @@
+  List<Boolean> output=flights.entrySet().stream().
+//                filter(n->n.getKey().equals(flight.getArrivalAirport())).
+//                map(Map.Entry::getValue).collect(Collectors.toList());
+//
+//          if (!output.isEmpty()){
+//              System.out.println(flight.getArrivalAirport()+" was found.");
+//              if (output.get(0)){
+//                  System.out.println("Airport is available from your destination");
+//              }else {
+//                  System.out.println("Airport is NOT available from your destination");
+//              }
+//          }else {
+//              throw new RouteNotFoundException("Airport not found");
+//          }

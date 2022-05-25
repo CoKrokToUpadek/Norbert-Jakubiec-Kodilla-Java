@@ -19,23 +19,18 @@ public class FlightOrganiser {
         flights.put("Wrocław",true);
         flights.put("Wąchock",false);
 
-       /* I wanted to try to make this with lambdas. It is not pretty but it works */
 
-          List<Boolean> output=flights.entrySet().stream().
-                  filter(n->n.getKey().equals(flight.getArrivalAirport())).
-                  map(Map.Entry::getValue).collect(Collectors.toList());
 
-          if (!output.isEmpty()){
-              System.out.println(flight.getArrivalAirport()+" was found.");
-              if (output.get(0)){
-                  System.out.println("Airport is available from your destination");
-              }else {
-                  System.out.println("Airport is NOT available from your destination");
-              }
-          }else {
-              throw new RouteNotFoundException("Airport not found");
-          }
-
+        if(flights.containsKey(flight.getArrivalAirport())){
+            System.out.println(flight.getArrivalAirport()+" was found.");
+            if (flights.get(flight.getArrivalAirport())){
+                System.out.println("Airport is available from your destination");
+             }else {
+               System.out.println("Airport is NOT available from your destination");
+            }
+        }else  {
+            throw new RouteNotFoundException("Airport not found");
+        }
     }
 
     public static void main(String[] args) {
