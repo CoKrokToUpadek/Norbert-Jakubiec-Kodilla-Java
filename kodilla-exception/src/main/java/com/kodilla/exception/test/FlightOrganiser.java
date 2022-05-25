@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class FlightOrganiser {
 
-    public static void findFlight(Flight flight) throws MessageNotSentException {
+    public static void findFlight(Flight flight) throws RouteNotFoundException {
 
         Map<String, Boolean> flights=new HashMap<>();
         flights.put("Modlin",true);
@@ -18,6 +18,8 @@ public class FlightOrganiser {
         flights.put("Bydgoszcz",true);
         flights.put("Wrocław",true);
         flights.put("Wąchock",false);
+
+       /* I wanted to try to make this with lambdas. It is not pretty but it works */
 
           List<Boolean> output=flights.entrySet().stream().
                   filter(n->n.getKey().equals(flight.getArrivalAirport())).
@@ -31,18 +33,18 @@ public class FlightOrganiser {
                   System.out.println("Airport is NOT available from your destination");
               }
           }else {
-              throw new MessageNotSentException("Airport not found");
+              throw new RouteNotFoundException("Airport not found");
           }
 
     }
 
     public static void main(String[] args) {
 
-        Flight flight=new Flight("Modlin","Wąchock");
+        Flight flight=new Flight("Modlin","404");
 
         try{
             FlightOrganiser.findFlight(flight);
-        }catch (MessageNotSentException e){
+        }catch (RouteNotFoundException e){
             System.out.println("something went wrong:"+e.getMessage());
         }
     }
