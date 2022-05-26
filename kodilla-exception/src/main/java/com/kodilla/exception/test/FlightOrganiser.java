@@ -19,6 +19,7 @@ public class FlightOrganiser {
         flights.put("Wrocław",true);
         flights.put("Wąchock",false);
 
+        flights.put("wsafafsafa",true);
 
 
         if(flights.containsKey(flight.getArrivalAirport())){

@@ -15,14 +15,6 @@ public class NullPointerExceptionRunner {
 
 
 
-
-
-
-
-
-
-
-
 //        User user = null;
 //        MessageSender messageSender = new MessageSender();
 //
