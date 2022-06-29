@@ -15,6 +15,7 @@ public class OrderProcessor {
 
         FoodManufacturer tempFM = null;
         Process tempP = null;
+        Product tempProduct=null;
 
         for (Map.Entry<FoodManufacturer, Process> entry : foodManufacturers.foodManufacturerProcessMap.entrySet()) {
             if (entry.getKey().equals(source)) {
@@ -22,9 +23,17 @@ public class OrderProcessor {
                 tempP = entry.getValue();
             }
         }
+
         assert tempFM != null;
+        for (Product p:tempFM.getProductList()){
+            if (p.getProductName().equals(order.getProduct())){
+                tempProduct=p;
+            }
+        }
+
+
         System.out.println(tempFM.getName() + "/" + tempFM.getAddress());
-        if (tempP.process(order)) {
+        if (tempP.process(order, tempProduct)) {
             System.out.println("order processed correctly");
         } else {
             System.out.println("something went wrong");
