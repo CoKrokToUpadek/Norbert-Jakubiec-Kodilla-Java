@@ -1,9 +1,7 @@
 package com.kodilla.good.patterns.challenges;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MovieStore {
@@ -29,7 +27,8 @@ public class MovieStore {
     }
 
     public void printMovies(Map<String, List<String>> movieList) {
-        movieList.entrySet().forEach(e-> System.out.print(e+"!"));
+     String output=movieList.values().stream().flatMap(Collection::stream).collect(Collectors.joining("!"));
+     System.out.println(output);
     }
 
     public static void main(String[] args) {
