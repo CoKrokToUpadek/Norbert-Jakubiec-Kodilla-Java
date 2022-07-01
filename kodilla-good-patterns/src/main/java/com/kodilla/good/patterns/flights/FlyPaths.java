@@ -62,24 +62,24 @@ public class FlyPaths {
         switch (controller){
             case 1:
                 System.out.println("fly paths where "+this.airport.getAirportName()+" is a start point");
-                for (int i=0;i<thisIsStartingPoint.size();i++){
-                    String output= thisIsStartingPoint.get(i).stream().map(Airport::getAirportName).collect(Collectors.joining("/"));
+                for (List<Airport> airports : thisIsStartingPoint) {
+                    String output = airports.stream().map(Airport::getAirportName).collect(Collectors.joining("/"));
                     System.out.println(output);
                 }
                 System.out.println("-----------------------------------");
                 break;
             case 2:
                 System.out.println("fly paths where "+this.airport.getAirportName()+" is an end point");
-                for (int i=0;i<thisIsEndPoint.size();i++){
-                    String output= thisIsEndPoint.get(i).stream().map(Airport::getAirportName).collect(Collectors.joining("/"));
+                for (List<Airport> airports : thisIsEndPoint) {
+                    String output = airports.stream().map(Airport::getAirportName).collect(Collectors.joining("/"));
                     System.out.println(output);
                 }
                 System.out.println("-----------------------------------");
                 break;
             case 3:
                 System.out.println("fly paths where "+this.airport.getAirportName()+" is a transit point");
-                for (int i=0;i<thisIsTransitPoint.size();i++){
-                    String output= thisIsTransitPoint.get(i).stream().map(Airport::getAirportName).collect(Collectors.joining("/"));
+                for (List<Airport> airports : thisIsTransitPoint) {
+                    String output = airports.stream().map(Airport::getAirportName).collect(Collectors.joining("/"));
                     System.out.println(output);
                 }
                 System.out.println("-----------------------------------");
