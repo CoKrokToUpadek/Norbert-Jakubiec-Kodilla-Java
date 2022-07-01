@@ -1,14 +1,15 @@
 package com.kodilla.good.patterns.flights;
 
 import java.util.Objects;
-import java.util.stream.Stream;
+
 
 public class Airport {
-    private  final String airportName;
+    private final String airportName;
 
     public Airport(String airportName) {
         this.airportName = airportName;
     }
+
     public String getAirportName() {
         return airportName;
     }

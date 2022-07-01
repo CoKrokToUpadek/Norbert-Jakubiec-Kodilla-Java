@@ -13,20 +13,19 @@ public class FlyPaths {
     private final List<List<Airport>> thisIsTransitPoint;
 
 
-
     public FlyPaths(Airport airportName) {
         this.airport = airportName;
-        thisIsStartingPoint=new ArrayList<>();
-        thisIsEndPoint=new ArrayList<>();
-        thisIsTransitPoint=new ArrayList<>();
+        thisIsStartingPoint = new ArrayList<>();
+        thisIsEndPoint = new ArrayList<>();
+        thisIsTransitPoint = new ArrayList<>();
     }
 
     /*first airport is automatically set to be this key airport*/
-    public void addNewFlyPathAsStartingPoint(Airport... airports){
-        List<Airport> tempList=new ArrayList<>();
-        if (airports.length==0){
+    public void addNewFlyPathAsStartingPoint(Airport... airports) {
+        List<Airport> tempList = new ArrayList<>();
+        if (airports.length == 0) {
             System.out.println("you cannot add empty fly path");
-        }else {
+        } else {
             tempList.add(this.airport);
             tempList.addAll(Arrays.asList(airports));
             thisIsStartingPoint.add(tempList);
@@ -34,12 +33,13 @@ public class FlyPaths {
 
 
     }
+
     /*last airport is automatically set to be this key airport*/
-    public void addNewFlyPathAsEndPoint(Airport... airports){
-        List<Airport> tempList=new ArrayList<>();
-        if (airports.length==0){
+    public void addNewFlyPathAsEndPoint(Airport... airports) {
+        List<Airport> tempList = new ArrayList<>();
+        if (airports.length == 0) {
             System.out.println("you cannot add empty fly path");
-        }else {
+        } else {
             tempList.addAll(Arrays.asList(airports));
             tempList.add(this.airport);
             thisIsEndPoint.add(tempList);
@@ -47,21 +47,21 @@ public class FlyPaths {
     }
 
     /*key airport must be in the argument list*/
-    public void addNewFlyPathAsTransitPoint(Airport...airports){
-        List<Airport> tempList=new ArrayList<>();
-        if (Arrays.stream(airports).filter(e->e.equals(this.airport)).findFirst().orElse(null)==null){
+    public void addNewFlyPathAsTransitPoint(Airport... airports) {
+        List<Airport> tempList = new ArrayList<>();
+        if (Arrays.stream(airports).filter(e -> e.equals(this.airport)).findFirst().orElse(null) == null) {
             System.out.println("no key airport amidst argument list");
-        }else{
+        } else {
             tempList.addAll(Arrays.asList(airports));
             thisIsTransitPoint.add(tempList);
         }
     }
 
-    public void printStartPoints(int controller){
+    public void printStartPoints(int controller) {
 
-        switch (controller){
+        switch (controller) {
             case 1:
-                System.out.println("fly paths where "+this.airport.getAirportName()+" is a start point");
+                System.out.println("fly paths where " + this.airport.getAirportName() + " is a start point");
                 for (List<Airport> airports : thisIsStartingPoint) {
                     String output = airports.stream().map(Airport::getAirportName).collect(Collectors.joining("/"));
                     System.out.println(output);
@@ -69,7 +69,7 @@ public class FlyPaths {
                 System.out.println("-----------------------------------");
                 break;
             case 2:
-                System.out.println("fly paths where "+this.airport.getAirportName()+" is an end point");
+                System.out.println("fly paths where " + this.airport.getAirportName() + " is an end point");
                 for (List<Airport> airports : thisIsEndPoint) {
                     String output = airports.stream().map(Airport::getAirportName).collect(Collectors.joining("/"));
                     System.out.println(output);
@@ -77,7 +77,7 @@ public class FlyPaths {
                 System.out.println("-----------------------------------");
                 break;
             case 3:
-                System.out.println("fly paths where "+this.airport.getAirportName()+" is a transit point");
+                System.out.println("fly paths where " + this.airport.getAirportName() + " is a transit point");
                 for (List<Airport> airports : thisIsTransitPoint) {
                     String output = airports.stream().map(Airport::getAirportName).collect(Collectors.joining("/"));
                     System.out.println(output);
