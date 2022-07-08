@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+/*@Service*/
 public class Library {
     private final List<String> books = new ArrayList<>();
-    @Autowired
+   /* @Autowired*/
     private LibraryDbController libraryDbController;
 
 
@@ -18,13 +18,13 @@ public class Library {
         this.libraryDbController = libraryDbController;
     }*/
 
-   /* @Autowired
+
     public Library(final LibraryDbController libraryDbController) {
         this.libraryDbController = libraryDbController;
     }
     public Library() {
 
-    }*/
+    }
 
     public void saveToDb() {
         libraryDbController.saveData();
