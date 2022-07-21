@@ -70,6 +70,4 @@ class DbManagerTestSuite {
        assertEquals(1, counter);
     }
 
-
-
 }
