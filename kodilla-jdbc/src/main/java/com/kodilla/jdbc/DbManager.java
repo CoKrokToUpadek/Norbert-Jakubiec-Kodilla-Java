@@ -32,5 +32,6 @@ public enum DbManager {
 
     public Connection getConnection() {                        // [19]
         return conn;                                            // [20]
+        //poprawione
     }                                                          // [21]
 }
