@@ -21,7 +21,7 @@ public class SudokuTestingSuite {
         SudokuBoard board=new SudokuBoard(9);
         board.generateEmptyBoard();
         //when
-        board.setElement(1,3,7);
+        board.setElement(3,1,7);
         SudokuElement tempElement=board.getElement(1,3);
         //then
         Assertions.assertEquals(tempElement.getCurrentFieldValue(),7);
@@ -53,17 +53,18 @@ public class SudokuTestingSuite {
         SudokuGame game=new SudokuGame(9);
         //when
         for (int i=0;i<9;i++){
-            game.getGameBoard().setElement(0,i,i+1);
+            game.getGameBoard().setElement(i,0,i+1);
         }
-        game.getGameBoard().setElement(1,1,3);
+        game.getGameBoard().setElement(1,1,4);
         game.sudokuSolver();
-        SudokuElement tempElement=game.getGameBoard().getElement(2,1);
+        SudokuElement tempElement=game.getGameBoard().getElement(1,0);
         SudokuElement tempElement2=game.getGameBoard().getElement(1,6);
         //then
+        game.PrintGameState();
         Assertions.assertFalse(tempElement.possibleValues.getPossibleValues().contains(3));
         Assertions.assertFalse(tempElement2.possibleValues.getPossibleValues().contains(7));
+        Assertions.assertTrue(tempElement.possibleValues.getPossibleValues().contains(8));
         tempElement.possibleValues.printPossibleValues();
-        game.PrintGameState();
     }
 
     @Test
@@ -74,7 +75,7 @@ public class SudokuTestingSuite {
 
         //when
           for (int i=2;i<9;i++){
-              game.getGameBoard().setElement(0,i,i+1);
+              game.getGameBoard().setElement(i,0,i+1);
           }
         game.getGameBoard().setElement(0,0,2);
         game.sudokuSolver();
@@ -94,19 +95,17 @@ public class SudokuTestingSuite {
         SudokuGame game=new SudokuGame(9);
         //when
         for (int i=2;i<9;i++){
-            game.getGameBoard().setElement(0,i,i+1);
+            game.getGameBoard().setElement(i,0,i+1);
         }
-        game.getGameBoard().setElement(0,0,2);
-        game.getGameBoard().setElement(1,8,2);
-        game.getGameBoard().setElement(2,8,2);
-        game.getGameBoard().setElement(3,8,2);
-        game.getGameBoard().setElement(4,8,2);
-        game.getGameBoard().setElement(8,0,9);
+        game.getGameBoard().setElement(0,2,4);
+        game.getGameBoard().setElement(1,1,5);
+        game.getGameBoard().setElement(1,2,6);
+        game.getGameBoard().setElement(2,1,7);
         game.sudokuSolver();
-        SudokuElement tempElement=game.getGameBoard().getElement(0,0);
+        SudokuElement tempElement=game.getGameBoard().getElement(2,2);
         //then
         tempElement.possibleValues.printPossibleValues();
-        Assertions.assertEquals(0, tempElement.possibleValues.getPossibleValues().size());
+        Assertions.assertEquals(4, tempElement.possibleValues.getPossibleValues().size());
         game.PrintGameState();
     }
 

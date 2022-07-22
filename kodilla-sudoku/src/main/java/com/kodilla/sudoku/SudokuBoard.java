@@ -22,7 +22,7 @@ public class SudokuBoard {
     }
 
     public void setElement(int columnIndex, int rowIndex, int value){
-        sudokuBoard.get(columnIndex).getSudokuRow().get(rowIndex).setCurrentFieldValue(value);
+        sudokuBoard.get(rowIndex).getSudokuRow().get(columnIndex).setCurrentFieldValue(value);
     }
     public SudokuElement getElement(int rowIndex, int columnIndex){
       return sudokuBoard.get(rowIndex).getSudokuRow().get(columnIndex);
