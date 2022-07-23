@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SudokuPossibleFieldValues {
-    public List<Integer> possibleValues;
+    private List<Integer> possibleValues;
 
     public SudokuPossibleFieldValues() {
         possibleValues=new ArrayList<>();
         for(int i=1;i<10;i++){
             possibleValues.add(i);
         }
+    }
+
+    public SudokuPossibleFieldValues(SudokuPossibleFieldValues values){
+        this.possibleValues=new ArrayList<>(values.possibleValues);
     }
 
     public void removeValue(Integer i){

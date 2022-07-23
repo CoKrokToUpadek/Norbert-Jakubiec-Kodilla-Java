@@ -3,7 +3,7 @@ package com.kodilla.sudoku;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SudokuBoard {
+public class SudokuBoard extends Prototype<SudokuBoard>{
     List<SudokuRow> sudokuBoard;
     private int boardSize;
 
@@ -34,6 +34,16 @@ public class SudokuBoard {
 
     public List<SudokuRow> getSudokuBoard() {
         return sudokuBoard;
+    }
+
+    @Override
+    public SudokuBoard clone() throws CloneNotSupportedException {
+        SudokuBoard clonedBoard=super.clone();
+        clonedBoard.sudokuBoard=new ArrayList<>();
+        for (SudokuRow row:this.sudokuBoard){
+            clonedBoard.sudokuBoard.add(row.SudokuRowCopy());
+        }
+        return clonedBoard;
     }
 
     @Override
