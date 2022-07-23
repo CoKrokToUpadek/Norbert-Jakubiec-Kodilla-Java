@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SudokuBoard extends Prototype<SudokuBoard>{
-    List<SudokuRow> sudokuBoard;
+    private List<SudokuRow> sudokuBoard;
     private int boardSize;
 
     public SudokuBoard(int boardSize) {

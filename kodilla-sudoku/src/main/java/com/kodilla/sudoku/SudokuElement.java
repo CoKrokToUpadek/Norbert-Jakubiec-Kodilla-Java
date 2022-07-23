@@ -2,7 +2,7 @@ package com.kodilla.sudoku;
 
 
 public class SudokuElement {
-    private int currentFieldValue;
+    private Integer currentFieldValue;
     public SudokuPossibleFieldValues possibleValues;
 
     public SudokuElement(int currentFieldValue) {
