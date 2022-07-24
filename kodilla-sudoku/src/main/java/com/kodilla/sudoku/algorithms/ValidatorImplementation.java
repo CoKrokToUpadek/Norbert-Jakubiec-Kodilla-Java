@@ -10,22 +10,27 @@ import com.kodilla.sudoku.algorithms.insidealgorithms.ValueOnBoardChecker;
 public class ValidatorImplementation implements ValidationAlgorithms {
 
 
-    private boolean errorStatus=false;
+    private boolean errorStatus = false;
+    private boolean changesWasMade=false;
 
     @Override
     public int checkIfValueIsAlreadyOnBoard(SudokuBoard board, int row, int column, SudokuElement currentCell) {
-        for(int i=1;i<=9;i++) {
-            if(currentCell.possibleValues.getPossibleValues().size()==1){
-               if (checkIfLastPossibleValueIsElsewhere(board,  row, column, currentCell)){
-                    errorStatus=true;
+        for (int i = 1; i <= 9; i++) {
+            if (currentCell.possibleValues.getPossibleValues().size() == 1) {
+                if (checkIfLastPossibleValueIsElsewhere(board, row, column, currentCell)) {
+                    errorStatus = true;
                 }
             }
+            if (checkerRow(board, row, currentCell, i, new ElementsRemover()) ||
+                    checkerColumn(board, column, currentCell, i, new ElementsRemover()) ||
+                    checker3x3(board, column, row, currentCell, i, new ElementsRemover())) {
+                changesWasMade=true;
+            }else {
+                changesWasMade=false;
+            }
 
-            checkerRow(board,row,currentCell,i,new ElementsRemover());
-            checkerColumn(board,column,currentCell,i, new ElementsRemover());
-            checker3x3(board,column,row,currentCell,i,new ElementsRemover());
         }
-        if (currentCell.possibleValues.getPossibleValues().size()==1 && !errorStatus){
+        if (currentCell.possibleValues.getPossibleValues().size() == 1 && !errorStatus) {
             return currentCell.possibleValues.getPossibleValues().get(0);
         }
         return -1;
@@ -34,10 +39,10 @@ public class ValidatorImplementation implements ValidationAlgorithms {
 
     @Override
     public int checkIfValueIsOnPossibleValuesList(SudokuBoard board, int row, int column, SudokuElement currentCell) {
-        for(int tempValue: currentCell.possibleValues.getPossibleValues()) {
-            if( !checkerRow(board,row,currentCell,tempValue, new PossibleValuesListChecker()) ||
-                    !checkerColumn(board,column,currentCell,tempValue, new PossibleValuesListChecker()) ||
-                    !checker3x3(board,column,row,currentCell,tempValue, new PossibleValuesListChecker())){
+        for (int tempValue : currentCell.possibleValues.getPossibleValues()) {
+            if (!checkerRow(board, row, currentCell, tempValue, new PossibleValuesListChecker()) ||
+                    !checkerColumn(board, column, currentCell, tempValue, new PossibleValuesListChecker()) ||
+                    !checker3x3(board, column, row, currentCell, tempValue, new PossibleValuesListChecker())) {
                 return tempValue;
             }
         }
@@ -47,10 +52,10 @@ public class ValidatorImplementation implements ValidationAlgorithms {
 
     @Override
     public boolean checkIfLastPossibleValueIsElsewhere(SudokuBoard board, int row, int column, SudokuElement currentCell) {
-        if (currentCell.possibleValues.getPossibleValues().size()==1){
-            return checkerRow(board, row, currentCell,0, new ValueOnBoardChecker())||
-                    checkerColumn(board, column, currentCell,0, new ValueOnBoardChecker()) ||
-                    checker3x3(board, column, row, currentCell,0, new ValueOnBoardChecker());
+        if (currentCell.possibleValues.getPossibleValues().size() == 1) {
+            return checkerRow(board, row, currentCell, 0, new ValueOnBoardChecker()) ||
+                    checkerColumn(board, column, currentCell, 0, new ValueOnBoardChecker()) ||
+                    checker3x3(board, column, row, currentCell, 0, new ValueOnBoardChecker());
         }
         return false;
     }
@@ -58,7 +63,7 @@ public class ValidatorImplementation implements ValidationAlgorithms {
     private boolean checkerRow(SudokuBoard gameBoard, int row, SudokuElement currentCell, int currentlyCheckedValue, ValidatorInsideMethodInterface method) {
         for (int k = 0; k < gameBoard.getBoardSize(); k++) {
             SudokuElement tempElement = gameBoard.getSudokuBoard().get(row).getSudokuRow().get(k);
-            if( method.InsideMethodImplementation(currentCell,tempElement,currentlyCheckedValue)==1){
+            if (method.InsideMethodImplementation(currentCell, tempElement, currentlyCheckedValue) == 1) {
                 return true;
             }
 
@@ -66,10 +71,10 @@ public class ValidatorImplementation implements ValidationAlgorithms {
         return false;
     }
 
-    private boolean checkerColumn(SudokuBoard gameBoard,int column, SudokuElement currentCell,int currentlyCheckedValue,ValidatorInsideMethodInterface method) {
+    private boolean checkerColumn(SudokuBoard gameBoard, int column, SudokuElement currentCell, int currentlyCheckedValue, ValidatorInsideMethodInterface method) {
         for (int k = 0; k < gameBoard.getBoardSize(); k++) {
             SudokuElement tempElement = gameBoard.getSudokuBoard().get(k).getSudokuRow().get(column);
-            if (method.InsideMethodImplementation(currentCell,tempElement,currentlyCheckedValue)==1){
+            if (method.InsideMethodImplementation(currentCell, tempElement, currentlyCheckedValue) == 1) {
                 return true;
             }
 
@@ -77,15 +82,15 @@ public class ValidatorImplementation implements ValidationAlgorithms {
         return false;
     }
 
-    private boolean checker3x3(SudokuBoard gameBoard,int column, int row, SudokuElement currentCell,int currentlyCheckedValue,ValidatorInsideMethodInterface method) {
+    private boolean checker3x3(SudokuBoard gameBoard, int column, int row, SudokuElement currentCell, int currentlyCheckedValue, ValidatorInsideMethodInterface method) {
 
-        int startColum=rowAndColumnStartCalc(column);
-        int startRow=rowAndColumnStartCalc(row);
+        int startColum = rowAndColumnStartCalc(column);
+        int startRow = rowAndColumnStartCalc(row);
 
         for (int i = startRow; i < startRow + 3; i++) {
             for (int j = startColum; j < startColum + 3; j++) {
-                SudokuElement tempElement= gameBoard.getSudokuBoard().get(i).getSudokuRow().get(j);
-                if ( method.InsideMethodImplementation(currentCell,tempElement,currentlyCheckedValue)==1){
+                SudokuElement tempElement = gameBoard.getSudokuBoard().get(i).getSudokuRow().get(j);
+                if (method.InsideMethodImplementation(currentCell, tempElement, currentlyCheckedValue) == 1) {
                     return true;
                 }
             }
@@ -94,13 +99,13 @@ public class ValidatorImplementation implements ValidationAlgorithms {
     }
 
 
-    int rowAndColumnStartCalc(int value){
-        if (value< 3) {
+    int rowAndColumnStartCalc(int value) {
+        if (value < 3) {
             return 0;
         } else if (value < 6) {
-            return  3;
+            return 3;
         } else {
-            return  6;
+            return 6;
         }
     }
 
@@ -110,5 +115,13 @@ public class ValidatorImplementation implements ValidationAlgorithms {
 
     public void setErrorStatus(boolean errorStatus) {
         this.errorStatus = errorStatus;
+    }
+
+    public boolean isChangesWasMade() {
+        return changesWasMade;
+    }
+
+    public void setChangesWasMade(boolean changesWasMade) {
+        this.changesWasMade = changesWasMade;
     }
 }

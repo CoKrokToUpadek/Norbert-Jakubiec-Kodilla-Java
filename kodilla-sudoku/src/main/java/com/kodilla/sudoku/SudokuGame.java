@@ -26,7 +26,7 @@ public class SudokuGame {
         Integer guessedCellValue = 0;
         int guessedCellRow = 0;
         int guessedCellColumn = 0;
-
+        int temploops=0;
 
         while (!escape) {
             actionTaken = false;
