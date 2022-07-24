@@ -17,12 +17,12 @@ public class SudokuGame {
 
     public void sudokuSolver()  {
         SudokuElement currentCell;
-        boolean actionTaken = true;
+        boolean actionTaken;
         boolean escape=false;
-        int tempEscape = 0;
-        int validatorOutput = 0;
+        int validatorOutput;
+        boolean errorFlag=false;
         SudokuElement guessedCell=new SudokuElement(-1);
-        Integer guessedCellValue=0;
+        Integer guessedCellValue;
         int guessedCellRow=0;
         int guessedCellColumn=0;
 
@@ -32,14 +32,13 @@ public class SudokuGame {
                 for (int j = 0; j < gameBoard.getBoardSize(); j++) {
                     currentCell = gameBoard.getSudokuBoard().get(i).getSudokuRow().get(j);
                     if (currentCell.getCurrentFieldValue() == -1) {
-
-                        validatorOutput = validator.checkIfValueIsAlreadyOnBoard(this.gameBoard, i, j, currentCell);
+                        validatorOutput = removePossibleValuesBasedOnItsExistenceInDifferentFields(validator,this.gameBoard, i, j, currentCell);
                         if (validatorOutput != -1) {
                             currentCell.setCurrentFieldValue(validatorOutput);
                             actionTaken = true;
                         }
 
-                        validatorOutput = validator.checkIfValueIsOnPossibleValuesList(this.gameBoard, i, j, currentCell);
+                        validatorOutput = removePossibleValuesBasedOnOtherCellsPossibleValueList(validator,this.gameBoard, i, j, currentCell);
                         if (validatorOutput != -1) {
                             currentCell.setCurrentFieldValue(validatorOutput);
                             actionTaken = true;
@@ -49,6 +48,13 @@ public class SudokuGame {
             }
 
             if(!actionTaken){
+                if (gameBoard.getSudokuBoard().stream().flatMap(s -> s.getSudokuRow().
+                        stream()).collect(Collectors.toList()).stream().noneMatch(s -> s.getCurrentFieldValue() == -1)){
+                    escape=true;
+                }
+
+
+
                 outerloop:
                 for (int i = 0; i < gameBoard.getBoardSize(); i++) {
                     for (int j = 0; j < gameBoard.getBoardSize(); j++) {
@@ -81,16 +87,15 @@ public class SudokuGame {
                   }
                 }
             }
-
-            if (gameBoard.getSudokuBoard().stream().flatMap(s -> s.getSudokuRow().
-                    stream()).collect(Collectors.toList()).stream().noneMatch(s -> s.getCurrentFieldValue() == -1)) {
-                    escape=true;
-            }
-            if (tempEscape==60){
-                System.out.println("pause");
-            }
-            tempEscape++;
         }
+    }
+
+    public int removePossibleValuesBasedOnItsExistenceInDifferentFields(ValidatorImplementation validator, SudokuBoard gameBoard, int i, int j, SudokuElement currentCell){
+      return  validator.checkIfValueIsAlreadyOnBoard(gameBoard, i, j, currentCell);
+    }
+
+    public int removePossibleValuesBasedOnOtherCellsPossibleValueList(ValidatorImplementation validator, SudokuBoard gameBoard, int i, int j, SudokuElement currentCell){
+        return  validator.checkIfValueIsOnPossibleValuesList(gameBoard, i, j, currentCell);
     }
 
 

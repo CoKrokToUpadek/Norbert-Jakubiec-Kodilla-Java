@@ -15,16 +15,17 @@ public class ValidatorImplementation implements ValidationAlgorithms {
     @Override
     public int checkIfValueIsAlreadyOnBoard(SudokuBoard board, int row, int column, SudokuElement currentCell) {
         for(int i=1;i<=9;i++) {
-            if (currentCell.possibleValues.getPossibleValues().size()==1){
-                if (checkIfLastPossibleValueIsElsewhere(board, row, column, currentCell)){
+            if(currentCell.possibleValues.getPossibleValues().size()==1){
+               if (checkIfLastPossibleValueIsElsewhere(board,  row, column, currentCell)){
                     errorStatus=true;
                 }
             }
+
             checkerRow(board,row,currentCell,i,new ElementsRemover());
             checkerColumn(board,column,currentCell,i, new ElementsRemover());
             checker3x3(board,column,row,currentCell,i,new ElementsRemover());
         }
-        if (currentCell.possibleValues.getPossibleValues().size()==1){
+        if (currentCell.possibleValues.getPossibleValues().size()==1 && !errorStatus){
             return currentCell.possibleValues.getPossibleValues().get(0);
         }
         return -1;

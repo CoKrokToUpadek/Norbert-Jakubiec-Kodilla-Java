@@ -1,9 +1,9 @@
 package com.kodilla.sudoku;
 
+import com.kodilla.sudoku.algorithms.ValidatorImplementation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class SudokuTestingSuite {
@@ -31,36 +31,27 @@ public class SudokuTestingSuite {
 
 
     @Test
-    public void testRemoveElementFromPossibleValuesRow() {
+    public void testRemovePossibleValuesBasedOnItsExistenceInDifferentFields() {
         //given
         SudokuGame game = new SudokuGame(9);
-        //when
-        game.getGameBoard().setElement(0, 0, 6);
-        game.getGameBoard().setElement(1, 0, 7);
-        game.sudokuSolver();
-        SudokuElement tempElement = game.getGameBoard().getElement(2, 0);
-        //then
-        Assertions.assertFalse(tempElement.possibleValues.getPossibleValues().contains(6));
-        tempElement.possibleValues.printPossibleValues();
-    }
-
-    @Test
-    public void testRemoveElementFromPossibleValuesRowAndColumn() {
-        //given
-        SudokuGame game = new SudokuGame(9);
-        //when
+        ValidatorImplementation validator=new ValidatorImplementation();
+        SudokuElement currentCell;
         for (int i = 0; i < 9; i++) {
             game.getGameBoard().setElement(i, 0, i + 1);
         }
         game.getGameBoard().setElement(1, 1, 4);
-        game.sudokuSolver();
-        SudokuElement tempElement = game.getGameBoard().getElement(1, 0);
-        SudokuElement tempElement2 = game.getGameBoard().getElement(1, 6);
+
+        //when
+        for (int i=0;i<9;i++){
+            for (int j=0;j<9;j++){
+                currentCell = game.getGameBoard().getSudokuBoard().get(i).getSudokuRow().get(j);
+                game.removePossibleValuesBasedOnItsExistenceInDifferentFields(validator,game.getGameBoard(),i,j,currentCell);
+            }
+        }
+        SudokuElement tempElement = game.getGameBoard().getElement(0, 4);
         //then
         game.PrintGameState();
-        Assertions.assertFalse(tempElement.possibleValues.getPossibleValues().contains(3));
-        Assertions.assertFalse(tempElement2.possibleValues.getPossibleValues().contains(7));
-        Assertions.assertTrue(tempElement.possibleValues.getPossibleValues().contains(8));
+        Assertions.assertTrue(tempElement.possibleValues.getPossibleValues().size()==1);
         tempElement.possibleValues.printPossibleValues();
     }
 
@@ -68,43 +59,42 @@ public class SudokuTestingSuite {
     public void testWritingLastMissingElementToTheRow() {
         //given
         SudokuGame game = new SudokuGame(9);
+        ValidatorImplementation validator=new ValidatorImplementation();
+        SudokuElement currentCell;
+        int validatorOutput=0;
 
-        //when
         for (int i = 2; i < 9; i++) {
             game.getGameBoard().setElement(i, 0, i + 1);
         }
         game.getGameBoard().setElement(0, 0, 2);
-        game.sudokuSolver();
-        SudokuElement tempElement = game.getGameBoard().getElement(0, 1);
 
-        //then
-        tempElement.possibleValues.printPossibleValues();
-        Assertions.assertEquals(0, tempElement.possibleValues.getPossibleValues().size());
-        game.PrintGameState();
-    }
-
-
-    @Test
-    public void testWritingMultipleElementsToGameBoard() {
-        //given
-        SudokuGame game = new SudokuGame(9);
         //when
-        for (int i = 2; i < 9; i++) {
-            game.getGameBoard().setElement(i, 0, i + 1);
+        for (int i=0;i<9;i++){
+            for (int j=0;j<9;j++){
+                currentCell = game.getGameBoard().getSudokuBoard().get(i).getSudokuRow().get(j);
+                if (currentCell.getCurrentFieldValue() == -1) {
+                    validatorOutput =  game.removePossibleValuesBasedOnItsExistenceInDifferentFields(validator,game.getGameBoard(), i, j, currentCell);
+                    if (validatorOutput != -1) {
+                        currentCell.setCurrentFieldValue(validatorOutput);
+
+                    }
+                    validatorOutput =  game.removePossibleValuesBasedOnItsExistenceInDifferentFields(validator,game.getGameBoard(), i, j, currentCell);;
+                    if (validatorOutput != -1) {
+                        currentCell.setCurrentFieldValue(validatorOutput);
+                    }
+                }
+            }
         }
-        game.getGameBoard().setElement(0, 2, 4);
-        game.getGameBoard().setElement(1, 1, 5);
-        game.getGameBoard().setElement(1, 2, 6);
-        game.getGameBoard().setElement(2, 1, 7);
-        game.getGameBoard().setElement(1, 3, 1);
-        game.getGameBoard().setElement(0, 3, 8);
-        game.sudokuSolver();
-        SudokuElement tempElement = game.getGameBoard().getElement(2, 2);
-        //then
-        Assertions.assertEquals(2, tempElement.possibleValues.getPossibleValues().size());
+
+
         game.PrintGameState();
+        SudokuElement tempElement = game.getGameBoard().getElement(0, 1);
+        //then
         tempElement.possibleValues.printPossibleValues();
+        Assertions.assertEquals(1, tempElement.getCurrentFieldValue());
     }
+
+
 
     @Test
     public void testForSolvingSudoku() {
@@ -196,11 +186,13 @@ public class SudokuTestingSuite {
         game.getGameBoard().setElement(4, 0, 6);
         game.getGameBoard().setElement(8, 0, 7);
         //when
-        game.sudokuSolver();
-        SudokuElement tempElement = game.getGameBoard().getElement(0, 0);
-        //then
+        try {
+            game.sudokuSolver();
+        }catch (NullPointerException e){
+            //then
+            Assertions.assertTrue(true);
+        }
         game.PrintGameState();
-        tempElement.possibleValues.printPossibleValues();
 
     }
 
