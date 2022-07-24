@@ -23,6 +23,9 @@ public class SudokuBoard extends Prototype<SudokuBoard>{
     public void setElement(int columnIndex, int rowIndex, int value){
         sudokuBoard.get(rowIndex).getSudokuRow().get(columnIndex).setCurrentFieldValue(value);
     }
+
+
+
     public SudokuElement getElement(int rowIndex, int columnIndex){
         try{
             return sudokuBoard.get(rowIndex).getSudokuRow().get(columnIndex);

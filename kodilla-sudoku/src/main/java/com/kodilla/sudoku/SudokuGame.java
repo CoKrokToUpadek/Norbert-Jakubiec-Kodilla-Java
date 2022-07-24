@@ -15,16 +15,18 @@ public class SudokuGame {
         gameBoard.generateEmptyBoard();
     }
 
-    public void sudokuSolver()  {
+    public void sudokuSolver() {
         SudokuElement currentCell;
+        SudokuElement lookOutCell;
         boolean actionTaken;
-        boolean escape=false;
+        boolean escape = false;
         int validatorOutput;
-        boolean errorFlag=false;
-        SudokuElement guessedCell=new SudokuElement(-1);
-        Integer guessedCellValue;
-        int guessedCellRow=0;
-        int guessedCellColumn=0;
+        boolean errorFlag = false;
+        SudokuElement guessedCell = new SudokuElement(-1);
+        Integer guessedCellValue = 0;
+        int guessedCellRow = 0;
+        int guessedCellColumn = 0;
+
 
         while (!escape) {
             actionTaken = false;
@@ -32,13 +34,13 @@ public class SudokuGame {
                 for (int j = 0; j < gameBoard.getBoardSize(); j++) {
                     currentCell = gameBoard.getSudokuBoard().get(i).getSudokuRow().get(j);
                     if (currentCell.getCurrentFieldValue() == -1) {
-                        validatorOutput = removePossibleValuesBasedOnItsExistenceInDifferentFields(validator,this.gameBoard, i, j, currentCell);
+                        validatorOutput = removePossibleValuesBasedOnItsExistenceInDifferentFields(validator, this.gameBoard, i, j, currentCell);
                         if (validatorOutput != -1) {
                             currentCell.setCurrentFieldValue(validatorOutput);
                             actionTaken = true;
                         }
 
-                        validatorOutput = removePossibleValuesBasedOnOtherCellsPossibleValueList(validator,this.gameBoard, i, j, currentCell);
+                        validatorOutput = removePossibleValuesBasedOnOtherCellsPossibleValueList(validator, this.gameBoard, i, j, currentCell);
                         if (validatorOutput != -1) {
                             currentCell.setCurrentFieldValue(validatorOutput);
                             actionTaken = true;
@@ -47,55 +49,59 @@ public class SudokuGame {
                 }
             }
 
-            if(!actionTaken){
+            if (!actionTaken) {
                 if (gameBoard.getSudokuBoard().stream().flatMap(s -> s.getSudokuRow().
-                        stream()).collect(Collectors.toList()).stream().noneMatch(s -> s.getCurrentFieldValue() == -1)){
-                    escape=true;
+                        stream()).collect(Collectors.toList()).stream().noneMatch(s -> s.getCurrentFieldValue() == -1)) {
+                    escape = true;
                 }
-
-
-
                 outerloop:
                 for (int i = 0; i < gameBoard.getBoardSize(); i++) {
                     for (int j = 0; j < gameBoard.getBoardSize(); j++) {
                         guessedCell = gameBoard.getSudokuBoard().get(i).getSudokuRow().get(j);
-                        if (guessedCell.getCurrentFieldValue()==-1){
-                            guessedCellRow=i;
-                            guessedCellColumn=j;
+                        if (guessedCell.getCurrentFieldValue() == -1) {
+                            guessedCellRow = i;
+                            guessedCellColumn = j;
+
                             break outerloop;
                         }
                     }
                 }
-                guessedCellValue=guessedCell.possibleValues.getPossibleValues().get(0);
+                guessedCellValue = guessedCell.possibleValues.getPossibleValues().get(0);
                 guessedCell.setCurrentFieldValue(guessedCellValue);
                 try {
-                    gameBoardCopy=gameBoard.clone();
+                    gameBoardCopy = gameBoard.clone();
                 } catch (CloneNotSupportedException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if(validator.isErrorStatus()){
+            if (validator.isErrorStatus()) {
                 validator.setErrorStatus(false);
                 try {
-                    gameBoard=gameBoardCopy.clone();
+                    gameBoard = gameBoardCopy.clone();
                 } catch (CloneNotSupportedException | NullPointerException e) {
-                  if (e instanceof CloneNotSupportedException){
-                      throw new RuntimeException(e);
-                  }else {
-                      System.out.println("invalid sudoku");
-                      throw new NullPointerException();
-                  }
+                    if (e instanceof CloneNotSupportedException) {
+                        throw new RuntimeException(e);
+                    } else {
+                        System.out.println("invalid sudoku");
+                        throw new NullPointerException();
+                    }
                 }
+                lookOutCell=gameBoard.getElement(guessedCellRow,guessedCellColumn);
+                lookOutCell.possibleValues.removeValue(guessedCellValue);
+                lookOutCell.setCurrentFieldValue(-1);
+
+
+
             }
         }
     }
 
-    public int removePossibleValuesBasedOnItsExistenceInDifferentFields(ValidatorImplementation validator, SudokuBoard gameBoard, int i, int j, SudokuElement currentCell){
-      return  validator.checkIfValueIsAlreadyOnBoard(gameBoard, i, j, currentCell);
+    public int removePossibleValuesBasedOnItsExistenceInDifferentFields(ValidatorImplementation validator, SudokuBoard gameBoard, int i, int j, SudokuElement currentCell) {
+        return validator.checkIfValueIsAlreadyOnBoard(gameBoard, i, j, currentCell);
     }
 
-    public int removePossibleValuesBasedOnOtherCellsPossibleValueList(ValidatorImplementation validator, SudokuBoard gameBoard, int i, int j, SudokuElement currentCell){
-        return  validator.checkIfValueIsOnPossibleValuesList(gameBoard, i, j, currentCell);
+    public int removePossibleValuesBasedOnOtherCellsPossibleValueList(ValidatorImplementation validator, SudokuBoard gameBoard, int i, int j, SudokuElement currentCell) {
+        return validator.checkIfValueIsOnPossibleValuesList(gameBoard, i, j, currentCell);
     }
 
 

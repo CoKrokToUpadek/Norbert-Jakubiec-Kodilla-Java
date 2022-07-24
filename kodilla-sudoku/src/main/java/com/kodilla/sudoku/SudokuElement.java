@@ -26,6 +26,7 @@ public class SudokuElement {
         }
     }
 
+
     public int getCurrentFieldValue() {
         return currentFieldValue;
     }

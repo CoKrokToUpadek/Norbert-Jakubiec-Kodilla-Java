@@ -201,14 +201,11 @@ public class SudokuTestingSuite {
         //given
         SudokuGame game = new SudokuGame(9);
 
-        //game.getGameBoard().setElement(0, 0, 0);
-
-
         //when
+        game.PrintGameState();
         game.sudokuSolver();
         SudokuElement tempElement = game.getGameBoard().getElement(0, 0);
         //then
-        game.PrintGameState();
         tempElement.possibleValues.printPossibleValues();
 
     }

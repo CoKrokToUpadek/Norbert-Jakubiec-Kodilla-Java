@@ -19,6 +19,7 @@ public class SudokuPossibleFieldValues {
 
     public void removeValue(Integer i){
         possibleValues.remove(i);
+
     }
 
     public List<Integer> getPossibleValues() {
