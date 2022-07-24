@@ -22,7 +22,7 @@ public class SudokuElement {
             this.currentFieldValue = currentFieldValue;
         }else {
             this.currentFieldValue = currentFieldValue;
-            possibleValues.removeValue(currentFieldValue);
+           // possibleValues.removeValue(currentFieldValue);
         }
     }
 

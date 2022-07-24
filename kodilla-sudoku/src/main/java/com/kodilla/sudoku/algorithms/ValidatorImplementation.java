@@ -2,15 +2,27 @@ package com.kodilla.sudoku.algorithms;
 
 import com.kodilla.sudoku.SudokuBoard;
 import com.kodilla.sudoku.SudokuElement;
+import com.kodilla.sudoku.algorithms.insidealgorithms.ElementsRemover;
+import com.kodilla.sudoku.algorithms.insidealgorithms.PossibleValuesListChecker;
+import com.kodilla.sudoku.algorithms.insidealgorithms.ValidatorInsideMethodInterface;
+import com.kodilla.sudoku.algorithms.insidealgorithms.ValueOnBoardChecker;
 
 public class ValidatorImplementation implements ValidationAlgorithms {
+
+
+    private boolean errorStatus=false;
 
     @Override
     public int checkIfValueIsAlreadyOnBoard(SudokuBoard board, int row, int column, SudokuElement currentCell) {
         for(int i=1;i<=9;i++) {
-            removeElementFromRow(board,row,currentCell,i);
-            removeElementFromColumn(board,column,currentCell,i);
-            removeElementFrom3x3(board,column,row,currentCell,i);
+            if (currentCell.possibleValues.getPossibleValues().size()==1){
+                if (checkIfLastPossibleValueIsElsewhere(board, row, column, currentCell)){
+                    errorStatus=true;
+                }
+            }
+            checkerRow(board,row,currentCell,i,new ElementsRemover());
+            checkerColumn(board,column,currentCell,i, new ElementsRemover());
+            checker3x3(board,column,row,currentCell,i,new ElementsRemover());
         }
         if (currentCell.possibleValues.getPossibleValues().size()==1){
             return currentCell.possibleValues.getPossibleValues().get(0);
@@ -22,9 +34,9 @@ public class ValidatorImplementation implements ValidationAlgorithms {
     @Override
     public int checkIfValueIsOnPossibleValuesList(SudokuBoard board, int row, int column, SudokuElement currentCell) {
         for(int tempValue: currentCell.possibleValues.getPossibleValues()) {
-            if( !checkPossibleValuesListInRow(board,row,currentCell,tempValue) ||
-                    !checkPossibleValuesListInColumn(board,column,currentCell,tempValue) ||
-                    !checkPossibleValuesListIn3x3(board,column,row,currentCell,tempValue)){
+            if( !checkerRow(board,row,currentCell,tempValue, new PossibleValuesListChecker()) ||
+                    !checkerColumn(board,column,currentCell,tempValue, new PossibleValuesListChecker()) ||
+                    !checker3x3(board,column,row,currentCell,tempValue, new PossibleValuesListChecker())){
                 return tempValue;
             }
         }
@@ -32,86 +44,52 @@ public class ValidatorImplementation implements ValidationAlgorithms {
     }
 
 
-    private boolean checkPossibleValuesListInRow(SudokuBoard gameBoard, int row, SudokuElement currentCell, int currentlyCheckedValue) {
-        for (int k = 0; k < gameBoard.getBoardSize(); k++) {
-            SudokuElement tempElement = gameBoard.getSudokuBoard().get(row).getSudokuRow().get(k);
-            if (tempElement != currentCell && tempElement.getCurrentFieldValue() == -1) {
-              if(tempElement.possibleValues.getPossibleValues().contains(currentlyCheckedValue)){
-                  return true;
-              }
-            }
+    @Override
+    public boolean checkIfLastPossibleValueIsElsewhere(SudokuBoard board, int row, int column, SudokuElement currentCell) {
+        if (currentCell.possibleValues.getPossibleValues().size()==1){
+            return checkerRow(board, row, currentCell,0, new ValueOnBoardChecker())||
+                    checkerColumn(board, column, currentCell,0, new ValueOnBoardChecker()) ||
+                    checker3x3(board, column, row, currentCell,0, new ValueOnBoardChecker());
         }
         return false;
     }
 
-    private boolean checkPossibleValuesListInColumn(SudokuBoard gameBoard,int column, SudokuElement currentCell, int currentlyCheckedValue) {
+    private boolean checkerRow(SudokuBoard gameBoard, int row, SudokuElement currentCell, int currentlyCheckedValue, ValidatorInsideMethodInterface method) {
+        for (int k = 0; k < gameBoard.getBoardSize(); k++) {
+            SudokuElement tempElement = gameBoard.getSudokuBoard().get(row).getSudokuRow().get(k);
+            if( method.InsideMethodImplementation(currentCell,tempElement,currentlyCheckedValue)==1){
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    private boolean checkerColumn(SudokuBoard gameBoard,int column, SudokuElement currentCell,int currentlyCheckedValue,ValidatorInsideMethodInterface method) {
         for (int k = 0; k < gameBoard.getBoardSize(); k++) {
             SudokuElement tempElement = gameBoard.getSudokuBoard().get(k).getSudokuRow().get(column);
-            if (tempElement != currentCell && tempElement.getCurrentFieldValue() == -1) {
-                if(tempElement.possibleValues.getPossibleValues().contains(currentlyCheckedValue)){
+            if (method.InsideMethodImplementation(currentCell,tempElement,currentlyCheckedValue)==1){
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    private boolean checker3x3(SudokuBoard gameBoard,int column, int row, SudokuElement currentCell,int currentlyCheckedValue,ValidatorInsideMethodInterface method) {
+
+        int startColum=rowAndColumnStartCalc(column);
+        int startRow=rowAndColumnStartCalc(row);
+
+        for (int i = startRow; i < startRow + 3; i++) {
+            for (int j = startColum; j < startColum + 3; j++) {
+                SudokuElement tempElement= gameBoard.getSudokuBoard().get(i).getSudokuRow().get(j);
+                if ( method.InsideMethodImplementation(currentCell,tempElement,currentlyCheckedValue)==1){
                     return true;
                 }
             }
         }
         return false;
-    }
-
-    private boolean checkPossibleValuesListIn3x3(SudokuBoard gameBoard,int column, int row, SudokuElement currentCell, int currentlyCheckedValue) {
-
-        int startColum=rowAndColumnStartCalc(column);
-        int startRow=rowAndColumnStartCalc(row);
-
-        for (int i = startRow; i < startRow + 3; i++) {
-            for (int j = startColum; j < startColum + 3; j++) {
-                SudokuElement tempElement= gameBoard.getSudokuBoard().get(i).getSudokuRow().get(j);
-                if (tempElement!=currentCell && tempElement.getCurrentFieldValue()==-1){
-                    if(tempElement.possibleValues.getPossibleValues().contains(currentlyCheckedValue)){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-
-    private void removeElementFromRow(SudokuBoard gameBoard, int row, SudokuElement currentCell, int currentlyCheckedValue) {
-        for (int k = 0; k < gameBoard.getBoardSize(); k++) {
-            SudokuElement tempElement=gameBoard.getSudokuBoard().get(row).getSudokuRow().get(k);
-            if (tempElement!=currentCell && tempElement.getCurrentFieldValue()!=-1){
-                if (tempElement.getCurrentFieldValue()==currentlyCheckedValue){
-                    currentCell.possibleValues.removeValue(currentlyCheckedValue);
-                }
-            }
-        }
-    }
-
-    private void removeElementFromColumn(SudokuBoard gameBoard,int column, SudokuElement currentCell, int currentlyCheckedValue) {
-        for (int k = 0; k < gameBoard.getBoardSize(); k++) {
-            SudokuElement tempElement=gameBoard.getSudokuBoard().get(k).getSudokuRow().get(column);
-            if (tempElement!=currentCell && tempElement.getCurrentFieldValue()!=-1){
-                if (tempElement.getCurrentFieldValue()==currentlyCheckedValue){
-                    currentCell.possibleValues.removeValue(currentlyCheckedValue);
-                }
-            }
-        }
-    }
-
-    private void removeElementFrom3x3(SudokuBoard gameBoard,int column, int row, SudokuElement currentCell, int currentlyCheckedValue) {
-
-        int startColum=rowAndColumnStartCalc(column);
-        int startRow=rowAndColumnStartCalc(row);
-
-        for (int i = startRow; i < startRow + 3; i++) {
-            for (int j = startColum; j < startColum + 3; j++) {
-                SudokuElement tempElement= gameBoard.getSudokuBoard().get(i).getSudokuRow().get(j);
-                if (tempElement!=currentCell && tempElement.getCurrentFieldValue()!=-1){
-                    if (tempElement.getCurrentFieldValue()==currentlyCheckedValue){
-                        currentCell.possibleValues.removeValue(currentlyCheckedValue);
-                    }
-                }
-            }
-        }
     }
 
 
@@ -123,5 +101,13 @@ public class ValidatorImplementation implements ValidationAlgorithms {
         } else {
             return  6;
         }
+    }
+
+    public boolean isErrorStatus() {
+        return errorStatus;
+    }
+
+    public void setErrorStatus(boolean errorStatus) {
+        this.errorStatus = errorStatus;
     }
 }

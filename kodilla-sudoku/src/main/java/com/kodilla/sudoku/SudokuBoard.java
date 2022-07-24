@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SudokuBoard extends Prototype<SudokuBoard>{
-    private List<SudokuRow> sudokuBoard;
-    private int boardSize;
+    private List<SudokuRow> sudokuBoard=new ArrayList<>();
+    private final int boardSize;
 
     public SudokuBoard(int boardSize) {
-        sudokuBoard = new ArrayList<>();
         this.boardSize = boardSize;
     }
 
@@ -25,7 +24,12 @@ public class SudokuBoard extends Prototype<SudokuBoard>{
         sudokuBoard.get(rowIndex).getSudokuRow().get(columnIndex).setCurrentFieldValue(value);
     }
     public SudokuElement getElement(int rowIndex, int columnIndex){
-      return sudokuBoard.get(rowIndex).getSudokuRow().get(columnIndex);
+        try{
+            return sudokuBoard.get(rowIndex).getSudokuRow().get(columnIndex);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("1");
+        }
+        return null;
     }
 
     public int getBoardSize() {
