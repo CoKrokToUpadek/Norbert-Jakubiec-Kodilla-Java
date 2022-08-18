@@ -6,6 +6,6 @@
             ["front left","leather","blue"],
             ["front right","leather","red"],
             ["back left","leather","orange"],
-            ["back right","concrete","grey"],
+            ["back right","concrete","grey"]
         ]
 }
