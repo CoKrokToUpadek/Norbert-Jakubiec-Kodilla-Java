@@ -1,0 +1,11 @@
+{
+"carName":"escort",
+"carBrand":"ford",
+"engineCapacity":1000.00,
+"seats":[
+            ["front left","leather","blue"],
+            ["front right","leather","red"],
+            ["back left","leather","orange"],
+            ["back right","concrete","grey"],
+        ]
+}
