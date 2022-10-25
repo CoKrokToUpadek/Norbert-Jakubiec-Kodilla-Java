@@ -14,6 +14,13 @@ import java.util.List;
         name = "Employee.retrieveEmployeesByName",
         query = "FROM Employee WHERE lastname =:LASTNAME"
 )
+
+@NamedNativeQuery(
+        name = "Employee.retrieveEmployeesByNameFragment",
+        query = "SELECT * FROM EMPLOYEES WHERE FIRSTNAME LIKE CONCAT('%',:NAMEFRAGMENT,'%')",
+        resultClass = Employee.class
+)
+
 @Entity
 @Table(name = "EMPLOYEES")
 public class Employee {
