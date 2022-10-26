@@ -22,29 +22,32 @@ public class SearchFacade {
     @Autowired
     EmployeeDao employeeDao;
 
-    public void findCompanyByNameFragment(String nameFragment){
+    public boolean findCompanyByNameFragment(String nameFragment){
         LOGGER.info("searching for companies with \""+nameFragment+"\"...");
         List<Company> companies= companyDao.retrieveCompaniesByNameLike(nameFragment);
         if (companies.isEmpty()){
             LOGGER.error(SearchExceptions.ERR_NO_COMPANY_NAMES_FOUND);
+            return false;
         }
         LOGGER.info("list of companies found:");
         for (Company company :companies){
             LOGGER.info(company.getName());
         }
+        return true;
     }
 
-    public void findEmployeeByNameFragment(String nameFragment){
+    public boolean findEmployeeByNameFragment(String nameFragment){
         LOGGER.info("searching for employees with \""+nameFragment+"\"...");
         List<Employee> employees= employeeDao.retrieveEmployeesByNameFragment(nameFragment);
         if (employees.isEmpty()){
             LOGGER.error(SearchExceptions.ERR_NO_EMPLOYEE_NAMES_FOUND);
-            return;
+            return false;
         }
         LOGGER.info("list of employees found:");
         for (Employee employee :employees){
             LOGGER.info(employee.getFirstname()+" "+employee.getLastname());
         }
+        return true;
     }
 
 }

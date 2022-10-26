@@ -1,6 +1,7 @@
 package com.kodilla.hibernate.manytomany.facade;
 
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,9 +14,9 @@ public class SearchFacadeTestSuite {
 
     @Test
     void searchFacadeTest()  {
-           searchFacade.findCompanyByNameFragment("Grey");
-           searchFacade.findEmployeeByNameFragment("John");
-           searchFacade.findEmployeeByNameFragment("Wrong stuff");
+         Assertions.assertTrue(searchFacade.findCompanyByNameFragment("Grey"));
+         Assertions.assertTrue(searchFacade.findEmployeeByNameFragment("John"));
+         Assertions.assertFalse(searchFacade.findEmployeeByNameFragment("Wrong stuff"));
     }
 
 
