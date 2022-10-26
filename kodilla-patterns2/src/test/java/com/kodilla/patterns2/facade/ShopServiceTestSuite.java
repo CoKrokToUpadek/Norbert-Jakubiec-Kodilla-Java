@@ -74,5 +74,36 @@ class ShopServiceTestSuite {
         } catch (OrderProcessingException e) {
             // business exception - should be handled in real application
         }
+        OrderDto order1 = new OrderDto();
+        order1.addItem(new ItemDto(10L, 2));
+        order1.addItem(new ItemDto(216L, 1));
+        order1.addItem(new ItemDto(25L, 1));
+        order1.addItem(new ItemDto(11L, 3));
+        try {
+            orderFacade.processOrder(order1, 1L);
+        } catch (OrderProcessingException e) {
+            // business exception - should be handled in real application
+        }
+
+        OrderDto order2 = new OrderDto();
+        order2.addItem(new ItemDto(10L, 2));
+        order2.addItem(new ItemDto(216L, 1));
+        order2.addItem(new ItemDto(25L, 1));
+        order2.addItem(new ItemDto(11L, 3));
+        try {
+            orderFacade.processOrder(order2, 1L);
+        } catch (OrderProcessingException e) {
+            // business exception - should be handled in real application
+        }
+        OrderDto order3 = new OrderDto();
+        order3.addItem(new ItemDto(10L, 2));
+        order3.addItem(new ItemDto(216L, 1));
+        order3.addItem(new ItemDto(25L, 1));
+        order3.addItem(new ItemDto(11L, 3));
+        try {
+            orderFacade.processOrder(order3, 1L);
+        } catch (OrderProcessingException e) {
+            // business exception - should be handled in real application
+        }
     }
 }
