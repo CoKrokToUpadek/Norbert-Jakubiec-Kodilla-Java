@@ -2,6 +2,8 @@ package com.kodilla.patterns2.observer.homework;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class KodillaUsersTestSuite {
 
     @Test
@@ -30,9 +32,9 @@ public class KodillaUsersTestSuite {
         user3.sendTask("compiler task");
         user4.sendTask("simple game task");
         user5.sendTask("structural programming task");
-        user5.sendTask("tests task");
-
-
+        //then
+        assertEquals(3, mentor1.getTasksSendToReview());
+        assertEquals(2, mentor2.getTasksSendToReview());
     }
 
 
