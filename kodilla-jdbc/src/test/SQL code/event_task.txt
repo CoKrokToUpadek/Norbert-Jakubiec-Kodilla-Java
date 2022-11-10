@@ -1,0 +1,29 @@
+#######################################################################################################
+CREATE TABLE STATS  (
+        STAT_ID INT(11) NOT NULL AUTO_INCREMENT,
+        STAT_DATE DATETIME NOT NULL,
+        STAT VARCHAR(20) NOT NULL,
+        STAT_VALUE INT(11) NOT NULL,
+        PRIMARY KEY (STAT_ID)
+);
+
+drop view BESTSELLERS_COUNT;
+
+CREATE VIEW BESTSELLERS_COUNT  AS
+SELECT count(*) AS BESTSELLER_COUNTER from BOOKS where BOOKS.BESTSELLER=1;
+
+USE KODILLA_COURSE;
+
+CREATE EVENT UpdateBestSellersEvent
+    ON SCHEDULE EVERY 1 MINUTE
+    DO
+    begin
+         CALL UpdateBestsellers();
+         INSERT INTO STATS(STAT_DATE, STAT, STAT_VALUE)
+         VALUES (CURTIME(),'BESTSELLERS', (SELECT BESTSELLER_COUNTER FROM BESTSELLERS_COUNT));
+    end;
+
+SHOW PROCESSLIST;
+SELECT * FROM stats;
+Drop event UpdateBestSellersEvent;
+#######################################################################################################
