@@ -1,0 +1,7 @@
+#######################################################################################################
+CREATE INDEX BOOKS_INDEX ON BOOKS (TITLE);
+
+CREATE INDEX READERS_INDEX ON READERS (FIRSTNAME,LASTNAME);
+
+EXPLAIN SELECT * FROM READERS WHERE FIRSTNAME='John';
+#######################################################################################################
