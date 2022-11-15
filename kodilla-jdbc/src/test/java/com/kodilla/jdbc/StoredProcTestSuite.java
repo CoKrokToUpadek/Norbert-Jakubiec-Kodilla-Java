@@ -53,7 +53,7 @@ public class StoredProcTestSuite {
         if (rs.next()) {
             howMany = rs.getInt("IS_BESTSELLER");
         }
-        assertEquals(2, howMany);
+        assertEquals(3, howMany);
         rs.close();
         statement.close();
 
